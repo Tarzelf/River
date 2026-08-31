@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>River Industries</title>
+    <meta name="description" content="River Industries" />
+    <meta name="theme-color" content="#050505" />
+    <meta property="og:title" content="River Industries" />
+    <meta property="og:description" content="River Industries" />
+    <meta property="og:image" content="/og.jpg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #050505;
+        color: #f4f4f2;
+        font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+        overflow: hidden;
+      }
+      main {
+        position: relative;
+        height: 100svh;
+        background: #050505;
+      }
+      .stage {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1px;
+        background: #050505;
+      }
+      video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: #050505;
+      }
+      .contact {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 4;
+        font-size: 8px;
+        font-weight: 500;
+        letter-spacing: 0.42em;
+        text-transform: uppercase;
+        color: rgba(244, 244, 242, 0.35);
+        text-decoration: none;
+      }
+      .contact:hover {
+        color: rgba(244, 244, 242, 0.8);
+      }
+      .mark {
+        pointer-events: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 24px;
+        z-index: 4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        color: #f4f4f2;
+      }
+      .mark svg {
+        width: 14px;
+        height: 14px;
+        display: block;
+      }
+      .mark span {
+        font-size: 8px;
+        font-weight: 500;
+        letter-spacing: 0.52em;
+        text-transform: uppercase;
+        color: rgba(244, 244, 242, 0.7);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="stage">
+        <video src="/holo-paint.mp4" autoplay muted loop playsinline></video>
+        <video src="/holo-frame.mp4" autoplay muted loop playsinline></video>
+        <video src="/holo-floor.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <a class="contact" href="mailto:joe@fb.io">Contact</a>
+      <div class="mark">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M7 4.5h11c5.8 0 9.5 3.3 9.5 8.2 0 3.5-2 6.2-5.4 7.4L28.5 28h-6.4L16.2 19.2H12.4V28H7V4.5zm5.4 4.8v7.2h5.4c3 0 4.9-1.6 4.9-3.6s-1.9-3.6-4.9-3.6h-5.4z"
+          />
+        </svg>
+        <span>River Industries</span>
+      </div>
+    </main>
+  </body>
+</html>

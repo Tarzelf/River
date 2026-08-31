@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 72" role="img" aria-label="River Industries">
+  <title>River Industries</title>
+  <g fill="#f4f4f2">
+    <!-- R -->
+    <path d="M8 8h22.5c9.6 0 16 5.4 16 13.6 0 5.9-3.4 10.5-9.2 12.4L50 64H38.4L27.6 49.2H20V64H8V8zm12 8.2V41h8.6c5.2 0 8.4-2.7 8.4-6.6s-3.2-6.6-8.4-6.6H20z"/>
+    <!-- I -->
+    <path d="M62 8h12v56H62z"/>
+    <!-- V -->
+    <path d="M86 8h13.2L112.6 50.4 126 8h13.4l-20.2 56h-13z"/>
+    <!-- E -->
+    <path d="M146 8h38v10.4h-26V31h22.8V41H158v12.6h27.2V64h-39.2z"/>
+    <!-- R -->
+    <path d="M196 8h22.5c9.6 0 16 5.4 16 13.6 0 5.9-3.4 10.5-9.2 12.4L238 64h-11.6L215.6 49.2H208V64h-12V8zm12 8.2V41h8.6c5.2 0 8.4-2.7 8.4-6.6s-3.2-6.6-8.4-6.6H208z"/>
+    <!-- river current -->
+    <path d="M241 14c42-12 84-6 171 6 2 .3 4 2 3.2 4.2-.7 1.8-2.6 2.4-4.4 2.1C328 16 287 12 241 22.5c-1.6.4-3.2-.8-3.4-2.4-.2-1.8 1.2-3.4 3.4-6.1z"/>
+  </g>
+  <text x="8" y="70" fill="#f4f4f2" font-family="Inter, Helvetica, Arial, sans-serif" font-size="7" font-weight="500" letter-spacing="6.2">INDUSTRIES</text>
+</svg>

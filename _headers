@@ -1,0 +1,10 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: origin
+  X-Frame-Options: DENY
+
+/og.jpg
+  Cache-Control: public, max-age=86400
+
+/*.mp4
+  Cache-Control: public, max-age=31536000, immutable

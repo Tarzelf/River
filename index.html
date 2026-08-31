@@ -2,55 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>River Industries</title>
-    <meta
-      name="description"
-      content="River Industries. Quiet industrial systems."
-    />
-    <meta
-      name="keywords"
-      content="River Industries, industrial systems, construction robotics, panelized building, United States"
-    />
+    <meta name="description" content="River Industries. Quiet industrial systems." />
+    <meta name="keywords" content="River Industries, industrial systems, construction robotics, panelized building, United States" />
     <meta name="author" content="River Industries" />
     <meta name="robots" content="index,follow" />
     <meta name="theme-color" content="#050505" />
     <link rel="canonical" href="https://river.industries/" />
-
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="River Industries" />
     <meta property="og:locale" content="en_US" />
     <meta property="og:url" content="https://river.industries/" />
     <meta property="og:title" content="River Industries" />
-    <meta
-      property="og:description"
-      content="River Industries. Quiet industrial systems."
-    />
+    <meta property="og:description" content="River Industries. Quiet industrial systems." />
     <meta property="og:image" content="https://river.industries/og.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="River Industries" />
-
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="River Industries" />
-    <meta
-      name="twitter:description"
-      content="River Industries. Quiet industrial systems."
-    />
+    <meta name="twitter:description" content="River Industries. Quiet industrial systems." />
     <meta name="twitter:image" content="https://river.industries/og.jpg" />
-
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-
+    <link rel="preload" as="image" href="/poster-paint.jpg" />
+    <link rel="preload" as="image" href="/poster-frame.jpg" />
+    <link rel="preload" as="image" href="/poster-floor.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -63,87 +46,222 @@
       }
     </script>
     <style>
-      html,
-      body {
+      :root {
+        --void: #050505;
+        --ink: #f4f4f2;
+        --duration-stagger: 40ms;
+        --duration-quick: 150ms;
+        --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+        --pulse-dur: 1000ms;
+        --pulse-min: 0.5;
+        --reveal-dur: 400ms;
+        --reveal-blur: 2px;
+        --stagger-dur: 500ms;
+        --stagger-distance: 12px;
+        --stagger-blur: 3px;
+      }
+      * { box-sizing: border-box; }
+      html, body {
         margin: 0;
         height: 100%;
-        background: #050505;
-        color: #f4f4f2;
+        background: var(--void);
+        color: var(--ink);
         font-family: Inter, "Helvetica Neue", Arial, sans-serif;
         overflow: hidden;
+        -webkit-font-smoothing: antialiased;
       }
-      main {
-        position: relative;
-        height: 100svh;
-        background: #050505;
-      }
-      .stage {
+      main { position: relative; height: 100svh; background: var(--void); }
+      .holo-stage {
         position: absolute;
         inset: 0;
         display: flex;
-        align-items: center;
+        align-items: stretch;
         justify-content: center;
-        background: #050505;
       }
-      .row {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1px;
-        width: min(100vw, calc(100svh * 48 / 9));
-        height: min(100svh, calc(100vw * 9 / 48));
+      .holo-row {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100svh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        scroll-snap-type: y mandatory;
+        -webkit-overflow-scrolling: touch;
       }
-      video {
+      .holo-clip {
+        position: relative;
+        flex: 0 0 auto;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        scroll-snap-align: center;
+        background: var(--void);
+      }
+      .holo-clip video, .holo-poster {
         display: block;
         width: 100%;
         height: 100%;
         object-fit: contain;
-        background: #050505;
+        background: var(--void);
+      }
+      .t-skel-skeleton, .t-skel-content { position: absolute; inset: 0; }
+      .t-skel-skeleton {
+        z-index: 1;
+        opacity: 1;
+        transition: opacity var(--reveal-dur) var(--ease-smooth-out),
+                    filter var(--reveal-dur) var(--ease-smooth-out);
+        transition-delay: var(--clip-delay, 0ms);
+      }
+      .t-skel-content {
+        z-index: 2;
+        opacity: 0;
+        filter: blur(var(--reveal-blur));
+        transition: opacity var(--reveal-dur) var(--ease-smooth-out),
+                    filter var(--reveal-dur) var(--ease-smooth-out);
+        transition-delay: var(--clip-delay, 0ms);
+      }
+      .t-skel.is-revealed .t-skel-skeleton { opacity: 0; filter: blur(var(--reveal-blur)); pointer-events: none; }
+      .t-skel.is-revealed .t-skel-content { opacity: 1; filter: blur(0); }
+      .holo-pulse {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent, rgb(244 244 242 / 0.04), transparent);
+        animation: t-skel-pulse var(--pulse-dur) ease-in-out infinite;
+      }
+      @keyframes t-skel-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: var(--pulse-min); }
       }
       .contact {
         position: absolute;
-        top: 20px;
-        right: 20px;
+        top: max(12px, env(safe-area-inset-top));
+        right: max(12px, env(safe-area-inset-right));
         z-index: 4;
-        font-size: 8px;
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        min-width: 44px;
+        padding: 10px 12px;
+        font-size: 11px;
         font-weight: 500;
-        letter-spacing: 0.28em;
+        letter-spacing: 0.22em;
         text-transform: uppercase;
-        color: rgba(244, 244, 242, 0.35);
+        color: rgb(244 244 242 / 0.45);
         text-decoration: none;
+        transition: color var(--duration-quick) var(--ease-smooth-out);
       }
-      .contact:hover {
-        color: rgba(244, 244, 242, 0.8);
-      }
+      .contact:hover, .contact:focus-visible { color: rgb(244 244 242 / 0.9); }
       .mark {
         pointer-events: none;
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 32px;
+        bottom: max(24px, env(safe-area-inset-bottom));
         z-index: 4;
         display: flex;
         justify-content: center;
       }
       .mark img {
         display: block;
-        width: min(52vw, 340px);
+        width: min(56vw, 200px);
         height: auto;
+        opacity: 0;
+        transform: translateY(var(--stagger-distance));
+        filter: blur(var(--stagger-blur));
+        transition: opacity var(--stagger-dur) var(--ease-smooth-out),
+                    transform var(--stagger-dur) var(--ease-smooth-out),
+                    filter var(--stagger-dur) var(--ease-smooth-out);
+      }
+      .mark.is-shown img {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+      @media (min-width: 768px) {
+        .holo-stage { align-items: center; }
+        .holo-row {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 1px;
+          width: min(100vw, calc(100svh * 48 / 9));
+          height: min(100svh, calc(100vw * 9 / 48));
+          overflow: hidden;
+          scroll-snap-type: none;
+        }
+        .holo-clip { aspect-ratio: auto; height: 100%; }
+        .mark img { width: min(52vw, 340px); }
+        .contact {
+          top: 20px;
+          right: 20px;
+          font-size: 8px;
+          letter-spacing: 0.28em;
+          padding: 8px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .t-skel-skeleton, .t-skel-content, .mark img, .contact { transition: none !important; }
+        .holo-pulse { animation: none !important; }
       }
     </style>
   </head>
   <body>
     <main>
-      <div class="stage">
-        <div class="row">
-          <video src="/holo-paint.mp4" autoplay muted loop playsinline></video>
-          <video src="/holo-frame.mp4" autoplay muted loop playsinline></video>
-          <video src="/holo-floor.mp4" autoplay muted loop playsinline></video>
+      <div class="holo-stage">
+        <div class="holo-row">
+          <div class="holo-clip t-skel" style="--clip-delay:0ms">
+            <div class="t-skel-skeleton is-pulsing" aria-hidden="true">
+              <img class="holo-poster" src="/poster-paint.jpg" alt="" />
+              <div class="holo-pulse"></div>
+            </div>
+            <div class="t-skel-content">
+              <video src="/holo-paint.mp4" poster="/poster-paint.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+            </div>
+          </div>
+          <div class="holo-clip t-skel" style="--clip-delay:40ms">
+            <div class="t-skel-skeleton is-pulsing" aria-hidden="true">
+              <img class="holo-poster" src="/poster-frame.jpg" alt="" />
+              <div class="holo-pulse"></div>
+            </div>
+            <div class="t-skel-content">
+              <video src="/holo-frame.mp4" poster="/poster-frame.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+            </div>
+          </div>
+          <div class="holo-clip t-skel" style="--clip-delay:80ms">
+            <div class="t-skel-skeleton is-pulsing" aria-hidden="true">
+              <img class="holo-poster" src="/poster-floor.jpg" alt="" />
+              <div class="holo-pulse"></div>
+            </div>
+            <div class="t-skel-content">
+              <video src="/holo-floor.mp4" poster="/poster-floor.jpg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
+            </div>
+          </div>
         </div>
       </div>
       <a class="contact" href="mailto:hello@river.industries">hello@river.industries</a>
-      <div class="mark">
+      <div class="mark" id="mark">
         <img src="/logo.jpg" alt="River Industries" />
       </div>
     </main>
+    <script>
+      (function () {
+        var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        document.querySelectorAll(".holo-clip").forEach(function (cell) {
+          var video = cell.querySelector("video");
+          function reveal() { cell.classList.add("is-revealed"); }
+          if (reduce) {
+            reveal();
+            if (video) video.pause();
+            return;
+          }
+          if (video) {
+            video.addEventListener("canplay", reveal, { once: true });
+            video.addEventListener("loadeddata", reveal, { once: true });
+            if (video.readyState >= 2) reveal();
+          }
+        });
+        requestAnimationFrame(function () {
+          document.getElementById("mark").classList.add("is-shown");
+        });
+      })();
+    </script>
   </body>
 </html>
